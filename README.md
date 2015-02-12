@@ -1,6 +1,6 @@
 # Immutable Graph
 
-This is my initial thought on an immutable graph structure with history. At this point I need to figure out how to deeply refer to the objects within the graph, and to deeply set objects.
+This is my initial thought on an immutable graph structure with history.
 
 ### Intended use case:
 
