@@ -1,29 +1,36 @@
 var Immutable = require('immutable')
-var CreateNewHistory = require('./history')
+var Cursor = require('immutable/contrib/cursor');
+var CreateGraph = require('./lib/graph')
+var CreateNode = require('./lib/node')
 
-var graph = Immutable.Map();
-var graphHistory = CreateNewHistory( graph );
+var root = CreateNode("root", {}, [
+	CreateNode("group")
+  , CreateNode("group")
+  , CreateNode("group")
+  , CreateNode("group")
+])
 
+var graph = CreateGraph( root )
 
 function log( msg ) {
 	
 	console.log( "\n\n" + msg )
-	console.log( "Full history:", graphHistory.list().toJSON() ) 
-	console.log( "Current object:", graphHistory.current().toJSON() ) 
+	console.log( "Full history:", graph.history().toJSON() ) 
+	console.log( "Current object:", graph.root().toJSON() ) 
 	
 }
 
-graphHistory.set( graphHistory.current().set("a", "A first property") )
-log( "setting a")
+function setIn() {
+	var root = graph.root()
+	graph.set( root.setIn.apply(root, arguments) )
+}
 
-graphHistory.set( graphHistory.current().set("b", "A new property") )
-log( "setting b")
+function updateIn() {
+	var root = graph.root()
+	graph.set( root.updateIn.apply(root, arguments) )
+}
 
-graphHistory.set( graphHistory.current().set("c", "Setting a final property") )
-log( "setting c")
+updateIn( ['edges'], edges => edges.push( CreateNode("raster") ) )
+updateIn( ['edges', 1, 'edges' ], edges => edges.push( CreateNode("raster") ) )
 
-graphHistory.set( graphHistory.get(-3) )
-log( "going back in time 3 from the right")
-
-graphHistory.set( graphHistory.current().set("d", "Going back almost to the beginning") )
-log( "rewriting history" )
+log( "Initial graph" )

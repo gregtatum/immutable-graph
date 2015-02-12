@@ -15,4 +15,5 @@ The example requires the following global npm modules:
 
 To run the example in your browser:
 
-    npm start
+    beefy example.js
+    beefy history-example.js
