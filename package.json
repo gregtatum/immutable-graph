@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "beefy example.js"
+    "start": "beefy nav-example.js",
+    "test": "browserify tests/index.js -d > spec/bundleSpec.js; jasmine;"
   },
   "author": "",
   "license": "ISC",

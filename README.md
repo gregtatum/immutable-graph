@@ -1,6 +1,6 @@
 # Immutable Graph
 
-This is my initial thought on an immutable graph structure with history.
+These are my initial thoughts on creating and working with immutable graph structure with history.
 
 ### Intended use case:
 
@@ -15,5 +15,9 @@ The example requires the following global npm modules:
 
 To run the example in your browser:
 
-    beefy example.js
+    beefy nav-example.js
     beefy history-example.js
+
+Tests can be run by:
+
+    npm test
