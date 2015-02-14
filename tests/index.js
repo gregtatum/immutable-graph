@@ -1,2 +1,2 @@
-// require('./graphSpec')
-require('./navigateGraphSpec')
+require('./graphSpec')
+require('./traverseSpec')

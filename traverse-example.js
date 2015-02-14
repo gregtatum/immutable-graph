@@ -2,7 +2,7 @@ var Immutable = require('immutable')
   , Cursor = require('immutable/contrib/cursor')
   , CreateGraph = require('./lib/graph')
   , CreateNode = require('./lib/node')
-  , WrapNav = require('./lib/wrapNavigateGraph')
+  , CreateTraverse = require('./lib/traverse')
   , _ = require('lodash')
 
 var root = CreateNode("root", {}, [
@@ -24,12 +24,12 @@ function log( msg ) {
 
 function setIn() {
 	var root = graph.root()
-	graph.set( root.setIn.apply(root, arguments) )
+	graph.update( root.setIn.apply(root, arguments) )
 }
 
 function updateIn() {
 	var root = graph.root()
-	graph.set( root.updateIn.apply(root, arguments) )
+	graph.update( root.updateIn.apply(root, arguments) )
 }
 
 updateIn( ['edges'], edges => edges.push( CreateNode("raster", {name: "raster1"}) ) )
@@ -37,7 +37,7 @@ updateIn( ['edges', 1, 'edges' ], edges => edges.push( CreateNode("raster",{name
 
 log( "Initial graph" )
 
-var nav = WrapNav( graph )
+var traverse = CreateTraverse( graph )
 
 var root = Cursor.from( graph.root(), [] )
 var rootEdges = Cursor.from( graph.root(), ['edges'] )
@@ -54,11 +54,11 @@ function findSiblingByName( name ) {
 	}
 }
 
-var group0 = nav.down( root )
-var group1 = nav.sibling( group0 )
-var group2 = nav.sibling( group1, 1 )
-var group3 = nav.sibling( group2, -3 )
-var raster1 = nav.sibling( group3, findSiblingByName("raster1") )
+var group0 = traverse.down( root )
+var group1 = traverse.sibling( group0 )
+var group2 = traverse.sibling( group1, 1 )
+var group3 = traverse.sibling( group2, -3 )
+var raster1 = traverse.sibling( group3, findSiblingByName("raster1") )
 
 console.log( group0.toJSON().data.name )
 console.log( group1.toJSON().data.name )

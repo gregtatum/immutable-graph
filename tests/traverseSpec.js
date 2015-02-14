@@ -1,7 +1,7 @@
 var Cursor = require('immutable/contrib/cursor')
   , CreateGraph = require('../lib/graph')
   , CreateNode = require('../lib/node')
-  , WrapNav = require('../lib/wrapNavigateGraph')
+  , CreateTraverse = require('../lib/traverse')
   , _ = require('lodash')
 
 describe("navigateGraph", function() {
@@ -23,13 +23,13 @@ describe("navigateGraph", function() {
 		
 		this.root = Cursor.from( this.graph.root(), [] )
 
-		this.nav = WrapNav( this.graph )
+		this.traverse = CreateTraverse( this.graph )
 		
 	})
 	
 	it("should navigate down one", function() {
 		
-		var group0 = this.nav.down( this.root )
+		var group0 = this.traverse.down( this.root )
 		
 		expect( group0.getIn(['data','name']) ).toBe( "group0" )
 		
@@ -37,9 +37,9 @@ describe("navigateGraph", function() {
 
 	it("should navigate down one to a specific index", function() {
 		
-		var group0 = this.nav.down( this.root, 0 )
-		var group1 = this.nav.down( this.root, 1 )
-		var group2 = this.nav.down( this.root, 2 )
+		var group0 = this.traverse.down( this.root, 0 )
+		var group1 = this.traverse.down( this.root, 1 )
+		var group2 = this.traverse.down( this.root, 2 )
 		
 		expect( group0.getIn(['data','name']) ).toBe( "group0" )
 		expect( group1.getIn(['data','name']) ).toBe( "group1" )
@@ -49,8 +49,8 @@ describe("navigateGraph", function() {
 	
 	it("should navigate up one", function() {
 		
-		var group0 = this.nav.down( this.root )
-		var root = this.nav.up( group0 )
+		var group0 = this.traverse.down( this.root )
+		var root = this.traverse.up( group0 )
 		
 		expect( root.getIn(['data','name']) ).toBe( "root" )
 	})
@@ -59,10 +59,10 @@ describe("navigateGraph", function() {
 		
 		it("should navigate to forwards without a direction parameter", function() {
 		
-			var group0 = this.nav.down( this.root )
-			var group1 = this.nav.sibling( group0 )
-			var group2 = this.nav.sibling( group1 )
-			var group0b = this.nav.sibling( group2 )
+			var group0 = this.traverse.down( this.root )
+			var group1 = this.traverse.sibling( group0 )
+			var group2 = this.traverse.sibling( group1 )
+			var group0b = this.traverse.sibling( group2 )
 		
 			expect( group0.getIn(['data','name']) ).toBe( "group0" )
 			expect( group1.getIn(['data','name']) ).toBe( "group1" )
@@ -72,10 +72,10 @@ describe("navigateGraph", function() {
 	
 		it("should navigate forward with a 1 direction", function() {
 		
-			var group0 = this.nav.down( this.root )
-			var group1 = this.nav.sibling( group0, 1)
-			var group2 = this.nav.sibling( group1, 1 )
-			var group0b = this.nav.sibling( group2, 1 )
+			var group0 = this.traverse.down( this.root )
+			var group1 = this.traverse.sibling( group0, 1)
+			var group2 = this.traverse.sibling( group1, 1 )
+			var group0b = this.traverse.sibling( group2, 1 )
 		
 			expect( group0.getIn(['data','name']) ).toBe( "group0" )
 			expect( group1.getIn(['data','name']) ).toBe( "group1" )
@@ -85,10 +85,10 @@ describe("navigateGraph", function() {
 	
 		it("should navigate backward with a -1 direction", function() {
 		
-			var group0 = this.nav.down( this.root )
-			var group2 = this.nav.sibling( group0, -1 )
-			var group1 = this.nav.sibling( group2, -1 )
-			var group0b = this.nav.sibling( group1, -1 )
+			var group0 = this.traverse.down( this.root )
+			var group2 = this.traverse.sibling( group0, -1 )
+			var group1 = this.traverse.sibling( group2, -1 )
+			var group0b = this.traverse.sibling( group1, -1 )
 		
 			expect( group0.getIn(['data','name']) ).toBe( "group0" )
 			expect( group1.getIn(['data','name']) ).toBe( "group1" )
@@ -108,12 +108,12 @@ describe("navigateGraph", function() {
 				}
 			}
 		
-			var group0 = this.nav.down( this.root)
+			var group0 = this.traverse.down( this.root)
 			
-			var group1 = this.nav.sibling( group0, findSiblingByName("group1") )
-			var group2 = this.nav.sibling( group0, findSiblingByName("group2") )
-			var group3 = this.nav.sibling( group0, findSiblingByName("group3") )
-			var group0b = this.nav.sibling( group0, findSiblingByName("group0") )
+			var group1 = this.traverse.sibling( group0, findSiblingByName("group1") )
+			var group2 = this.traverse.sibling( group0, findSiblingByName("group2") )
+			var group3 = this.traverse.sibling( group0, findSiblingByName("group3") )
+			var group0b = this.traverse.sibling( group0, findSiblingByName("group0") )
 		
 			expect( group0.getIn(['data','name']) ).toBe( "group0" )
 			expect( group1.getIn(['data','name']) ).toBe( "group1" )

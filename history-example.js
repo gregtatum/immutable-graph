@@ -12,22 +12,22 @@ function log( msg ) {
 	
 }
 
-graph.set( graph.root().set("a", "A first property") )
+graph.update( graph.root().set("a", "A first property") )
 
 log( "set a")
 
-graph.set( graph.root().set("b", "A new property") )
+graph.update( graph.root().set("b", "A new property") )
 
 log( "set b")
 
-graph.set( graph.root().set("c", "Setting a final property") )
+graph.update( graph.root().set("c", "Setting a final property") )
 
 log( "set c")
 
-graph.set( graph.get(-3) )
+graph.undo( 3 )
 
 log( "went back in time 3 from the right")
 
-graph.set( graph.root().set("d", "Going back almost to the beginning") )
+graph.update( graph.root().set("d", "Going back almost to the beginning") )
 
 log( "rewrote history" )

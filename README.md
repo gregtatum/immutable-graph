@@ -1,6 +1,6 @@
 # Immutable Graph
 
-These are my initial thoughts on creating and working with immutable graph structure with history.
+These are my initial thoughts on creating and working with an immutable graph structure with history.
 
 ### Intended use case:
 
