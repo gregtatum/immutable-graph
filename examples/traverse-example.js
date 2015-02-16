@@ -1,8 +1,8 @@
 var Immutable = require('immutable')
   , Cursor = require('immutable/contrib/cursor')
-  , CreateGraph = require('./lib/graph')
-  , CreateNode = require('./lib/node')
-  , CreateTraverse = require('./lib/traverse')
+  , CreateGraph = require('../lib/graph')
+  , CreateNode = require('../lib/node')
+  , CreateTraverse = require('../lib/traverse')
   , _ = require('lodash')
 
 var root = CreateNode("root", {}, [
@@ -42,6 +42,17 @@ var traverse = CreateTraverse( graph )
 var root = Cursor.from( graph.root(), [] )
 var rootEdges = Cursor.from( graph.root(), ['edges'] )
 var firstChild = Cursor.from( graph.root(), ['edges', 0] )
+
+debugger
+var reduction = traverse.reduce(function( memo, node ) {
+	console.log("memo:", memo);
+	return memo + node.getIn(['data','name'])
+}, "")
+console.log("reduction:", reduction);
+
+traverse.each(function( node ) {
+	console.log("each:", node.getIn(['data', 'name']) );
+})
 
 
 function findSiblingByName( name ) {

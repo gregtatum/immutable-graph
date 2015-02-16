@@ -123,4 +123,73 @@ describe("navigateGraph", function() {
 		
 	})
 	
+	it("should traverse each node", function() {
+		
+		var memo = ""
+		var paths = []
+		
+		this.traverse.each(function( node, path ) {
+			paths.push( path )
+			memo += node.getIn(['data','name'])
+		})
+		
+		expect( memo ).toBe( "rootgroup0raster1raster2group1group2" )
+		
+		expect( paths[0] ).toEqual( [] )
+		expect( paths[1] ).toEqual( ['edges', 0] )
+		expect( paths[2] ).toEqual( ['edges', 0, 'edges', 0] )
+		expect( paths[3] ).toEqual( ['edges', 0, 'edges', 1] )
+		expect( paths[4] ).toEqual( ['edges', 1] )
+		expect( paths[5] ).toEqual( ['edges', 2] )
+		
+	})
+	
+	it("should reduce each node", function() {
+		
+		var paths = []
+		var result = this.traverse.reduce(function( memo, node, path ) {
+			paths.push( path )
+			return memo + node.getIn(['data','name'])
+		}, "")
+		
+		expect( result ).toBe( "rootgroup0raster1raster2group1group2" )
+		
+		expect( paths[0] ).toEqual( [] )
+		expect( paths[1] ).toEqual( ['edges', 0] )
+		expect( paths[2] ).toEqual( ['edges', 0, 'edges', 0] )
+		expect( paths[3] ).toEqual( ['edges', 0, 'edges', 1] )
+		expect( paths[4] ).toEqual( ['edges', 1] )
+		expect( paths[5] ).toEqual( ['edges', 2] )
+		
+	})
+	
+	it("should filter nodes", function() {
+		
+		var paths = []
+		
+		var nodes = this.traverse.filter(function( node, path ) {
+
+			paths.push( path )
+			
+			var name = node.getIn( ['data', 'name'] )
+			
+			if( name === "raster1" || name === "raster2" ) {
+				return true
+			} else {
+				return false
+			}
+		})
+		
+		expect( nodes[0].getIn(['data', 'name']) ).toBe( "raster1" )
+		expect( nodes[1].getIn(['data', 'name']) ).toBe( "raster2" )
+		
+		expect( paths[0] ).toEqual( [] )
+		expect( paths[1] ).toEqual( ['edges', 0] )
+		expect( paths[2] ).toEqual( ['edges', 0, 'edges', 0] )
+		expect( paths[3] ).toEqual( ['edges', 0, 'edges', 1] )
+		expect( paths[4] ).toEqual( ['edges', 1] )
+		expect( paths[5] ).toEqual( ['edges', 2] )
+		
+	});	
+	
 })

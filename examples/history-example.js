@@ -1,5 +1,5 @@
 var Immutable = require('immutable')
-var CreateGraph = require('./lib/graph')
+var CreateGraph = require('../lib/graph')
 
 var root = Immutable.Map()
 var graph = CreateGraph( root )

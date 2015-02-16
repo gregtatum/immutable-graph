@@ -45,6 +45,7 @@ describe("immutable graph", function() {
 		expect( graph.root().get("b") ).toBe( "2nd" )
 		expect( graph.root().get("c") ).toBe( undefined )
 		
+		// Undo extra times
 		graph.undo(10)
 		
 		expect( graph.root().get("a") ).toBe( undefined )
