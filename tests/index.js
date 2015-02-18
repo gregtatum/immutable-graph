@@ -1,2 +1,0 @@
-require('./graphSpec')
-require('./traverseSpec')

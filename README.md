@@ -10,13 +10,17 @@ http://node.graphics/
 
 The example requires the following global npm modules:
 
-    npm install browserify -g
-    npm install beefy -g    
-
 To run the example in your browser:
 
-    beefy nav-example.js
-    beefy history-example.js
+    beefy examples/history-example.js
+    beefy examples/move-example.js
+    beefy examples/traverse-example.js
+
+Or if beefy is not globally installed:
+
+    node_modules/.bin/beefy examples/history-example.js
+    node_modules/.bin/beefy examples/move-example.js
+    node_modules/.bin/beefy examples/traverse-example.js
 
 Tests can be run by:
 
