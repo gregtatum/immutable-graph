@@ -6,15 +6,16 @@ These are my initial thoughts on creating and working with an immutable graph st
 
 http://node.graphics/
 
-### To run:
+### (EXAMPLES ARE CURRENTLY BROKEN) To run:
 
 The example requires the following global npm modules:
 
 To run the example in your browser:
 
-    beefy examples/history-example.js
-    beefy examples/move-example.js
-    beefy examples/traverse-example.js
+    (currently broken) beefy examples/history-example.js
+    (currently broken) beefy examples/move-example.js
+    (currently broken) beefy examples/traverse-example.js
+    beefy examples/node-example.js
 
 Or if beefy is not globally installed:
 
