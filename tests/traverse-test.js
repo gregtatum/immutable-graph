@@ -1,19 +1,23 @@
 var CreateGraph = require('../lib/graph')
-  , CreateNode = require('../lib/node')
+  , Node = require('../lib/node')()
   , CreateTraverse = require('../lib/traverse')
   , _ = require('lodash')
   , test = require('tape')
 
+var [,createRoot]		= Node.registerNodeType("root")
+var [,createGroup]		= Node.registerNodeType("group")
+var [,createRaster]		= Node.registerNodeType("raster")
+
 function _newGraph() {
 	return CreateGraph(
 	
-		CreateNode("root", {name: "root"}, [
-			CreateNode("group", {name: "group0"}, [
-				CreateNode("raster", {name: "raster1"}),
-				CreateNode("raster", {name: "raster2"})
+		createRoot({name: "root"}, [
+			createGroup({name: "group0"}, [
+				createRaster({name: "raster1"}),
+				createRaster({name: "raster2"})
 			])
-		  , CreateNode("group", {name: "group1"})
-		  , CreateNode("group", {name: "group2"})
+		  , createGroup({name: "group1"})
+		  , createGroup({name: "group2"})
 		])
 	)
 }

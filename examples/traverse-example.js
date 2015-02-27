@@ -1,15 +1,22 @@
 var Immutable = require('immutable')
   , Cursor = require('immutable/contrib/cursor')
   , CreateGraph = require('../lib/graph')
-  , CreateNode = require('../lib/node')
+  , Node = require('../lib/node')()
   , CreateTraverse = require('../lib/traverse')
   , _ = require('lodash')
 
-var root = CreateNode("root", {}, [
-	CreateNode("group", {name: "group 0"})
-  , CreateNode("group", {name: "group 1"})
-  , CreateNode("group", {name: "group 2"})
-  , CreateNode("group", {name: "group 3"})
+throw new Error('Not working anymore')
+
+var [,createRoot]		= Node.registerNodeType("root")
+var [,createGroup]		= Node.registerNodeType("group")
+var [,createRaster]		= Node.registerNodeType("raster")
+var [,createVector]		= Node.registerNodeType("vector")
+
+var root = createRoot({}, [
+	createGroup({name: "group 0"})
+  , createGroup({name: "group 1"})
+  , createGroup({name: "group 2"})
+  , createGroup({name: "group 3"})
 ])
 
 var graph = CreateGraph( root )
@@ -32,8 +39,8 @@ function updateIn() {
 	graph.update( root.updateIn.apply(root, arguments) )
 }
 
-updateIn( ['edges'], edges => edges.push( CreateNode("raster", {name: "raster1"}) ) )
-updateIn( ['edges', 1, 'edges' ], edges => edges.push( CreateNode("raster",{name: "raster2"}) ) )
+updateIn( ['edges'], edges => edges.push( createRaster({name: "raster1"}) ) )
+updateIn( ['edges', 1, 'edges' ], edges => edges.push( createRaster({name: "raster2"}) ) )
 
 log( "Initial graph" )
 

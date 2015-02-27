@@ -4,11 +4,14 @@ var CreateGraph = require('../lib/graph')
 var root = Immutable.Map()
 var graph = CreateGraph( root )
 
+function json( message, obj ) {
+	console.log( message, JSON.stringify( obj, null, "\t" ) );
+}
 function log( msg ) {
 	
 	console.log( "\n\n" + msg )
-	console.log( "Full history:", graph.history().toJSON() ) 
-	console.log( "Current object:", graph.root().toJSON() ) 
+	json( "Full history:", graph.history().toJSON() ) 
+	json( "Current object:", graph.root().toJSON() ) 
 	
 }
 
@@ -24,9 +27,9 @@ graph.update( graph.root().set("c", "Setting a final property") )
 
 log( "set c")
 
-graph.undo( 3 )
+graph.undo( 2 )
 
-log( "went back in time 3 from the right")
+log( "went back in time twice")
 
 graph.update( graph.root().set("d", "Going back almost to the beginning") )
 
