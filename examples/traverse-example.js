@@ -1,85 +1,91 @@
-var Immutable = require('immutable')
-  , Cursor = require('immutable/contrib/cursor')
-  , CreateGraph = require('../lib/graph')
+var CreateGraph = require('../lib/graph')
   , Node = require('../lib/node')()
   , CreateTraverse = require('../lib/traverse')
-  , _ = require('lodash')
-
-throw new Error('Not working anymore')
+  , ConsoleJSON = require('./utils/json')
 
 var [,createRoot]		= Node.registerNodeType("root")
 var [,createGroup]		= Node.registerNodeType("group")
 var [,createRaster]		= Node.registerNodeType("raster")
-var [,createVector]		= Node.registerNodeType("vector")
 
-var root = createRoot({}, [
-	createGroup({name: "group 0"})
-  , createGroup({name: "group 1"})
-  , createGroup({name: "group 2"})
-  , createGroup({name: "group 3"})
-])
-
-var graph = CreateGraph( root )
-
-function log( msg ) {
-	
-	console.log( "\n\n" + msg )
-	console.log( "Full history:", graph.history().toJSON() ) 
-	console.log( "Current object:", graph.root().toJSON() ) 
+function log(msg) {
+	console.log(
+		"\n----------------------------------\n| "+
+		msg+
+		"\n----------------------------------"
+	)
 	
 }
 
-function setIn() {
+module.exports = function runExample() {
+	console.clear()
+	
+	//-----------------------------------
+	// Init
+	
+	var graph = CreateGraph(
+	
+		createRoot({name: "root"}, [
+			createGroup({name: "group0"}, [
+				createRaster({name: "raster1"}),
+				createRaster({name: "raster2"})
+			])
+		  , createGroup({name: "group1"})
+		  , createGroup({name: "group2"})
+		])
+	)
+	
 	var root = graph.root()
-	graph.update( root.setIn.apply(root, arguments) )
-}
 
-function updateIn() {
-	var root = graph.root()
-	graph.update( root.updateIn.apply(root, arguments) )
-}
-
-updateIn( ['edges'], edges => edges.push( createRaster({name: "raster1"}) ) )
-updateIn( ['edges', 1, 'edges' ], edges => edges.push( createRaster({name: "raster2"}) ) )
-
-log( "Initial graph" )
-
-var traverse = CreateTraverse( graph )
-
-var root = Cursor.from( graph.root(), [] )
-var rootEdges = Cursor.from( graph.root(), ['edges'] )
-var firstChild = Cursor.from( graph.root(), ['edges', 0] )
-
-debugger
-var reduction = traverse.reduce(function( memo, node ) {
-	console.log("memo:", memo);
-	return memo + node.getIn(['data','name'])
-}, "")
-console.log("reduction:", reduction);
-
-traverse.each(function( node ) {
-	console.log("each:", node.getIn(['data', 'name']) );
-})
+	var traverse = CreateTraverse( graph )
+	
+	var rootPath = []
+	
+	//-----------------------------------
+	// Simple traversing
+	
+	log("traverse down:")
+	
+	var group0Path = traverse.down( rootPath, 0 )
+	var group1Path = traverse.down( rootPath, 1 )
+	var group2Path = traverse.down( rootPath, 2 )
+	
+	ConsoleJSON( "group0:", root.getIn( group0Path ).toJSON() )
+	ConsoleJSON( "group1:", root.getIn( group1Path ).toJSON() )
+	ConsoleJSON( "group2:", root.getIn( group2Path ).toJSON() )
 
 
-function findSiblingByName( name ) {
-	return function( siblings ) {
-		var group = siblings.find( function( sibling ) {
-			return sibling.getIn(['data','name']) === name
+	log("traverse up:")
+	
+	var backToRootPath = traverse.up( group0Path )
+	
+	ConsoleJSON( "navigated root === original root? ", root.getIn( backToRootPath ) === graph.root() )
+	
+	
+	//-----------------------------------
+	// Function traversing
+	
+	log("traverse.each");
+	
+	traverse.each(function( path, node, root ) {
+		ConsoleJSON( "Node:", {
+			nodeName: node.getIn(['data','name'])
+			, path: path.join(', ')
 		})
+	})
 	
-		return siblings.indexOf( group )
-	}
+	log("traverse.reduce")
+	
+	ConsoleJSON( "Number of 'group' nodes:",
+		
+		traverse.reduce(function( memo, node, path ) {
+			return memo + (node.get('type') === "group" ? 1 : 0)
+		}, 0)
+	)
+	
+	ConsoleJSON( "Number of 'raster' nodes:",
+	
+		traverse.reduce(function( memo, node, path ) {
+			return memo + (node.get('type') === "raster" ? 1 : 0)
+		}, 0)
+	)
 }
-
-var group0 = traverse.down( root )
-var group1 = traverse.sibling( group0 )
-var group2 = traverse.sibling( group1, 1 )
-var group3 = traverse.sibling( group2, -3 )
-var raster1 = traverse.sibling( group3, findSiblingByName("raster1") )
-
-console.log( group0.toJSON().data.name )
-console.log( group1.toJSON().data.name )
-console.log( group2.toJSON().data.name )
-console.log( group3.toJSON().data.name )
-console.log( raster1.toJSON().data.name )

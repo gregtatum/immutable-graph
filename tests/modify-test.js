@@ -11,6 +11,7 @@ var [,createVector]		= Node.registerNodeType("vector")
 
 
 var _graph = function() {
+	
 	return CreateGraph(
 		
 		createRoot({name: "root"}, [

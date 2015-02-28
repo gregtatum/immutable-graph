@@ -2,9 +2,9 @@
   "name": "immutable-graph",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/graph.js",
   "scripts": {
-    "start": "beefy nav-example.js",
+    "start": "beefy examples/utils/entry.js --index=examples/utils/index.html --open --live",
     "test": "browserify tests/*.js | node | faucet"
   },
   "author": "",
@@ -17,7 +17,8 @@
     "immutable": "^3.6.2",
     "lodash": "^3.1.0",
     "shallow-equals": "0.0.0",
-    "tape": "^3.5.0"
+    "tape": "^3.5.0",
+    "watchify": "^2.4.0"
   },
   "browserify": {
     "transform": [
