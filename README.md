@@ -2,11 +2,11 @@
 
 Experimentations with an immutable tree graph structure with history. Uses http://facebook.github.io/immutable-js/
 
-## Intended use case:
+### Intended use case:
 
 A DOM like structure for drawing raster and vector graphics. The immutability of the graph is to support history, while the mutable state properties are for real time display and interaction.
 
-## Usage
+### Usage
 
     var CreateGraph = require('immutable-graph')
       , NodeRegistry = require('immutable-graph/lib/node')()
@@ -41,89 +41,89 @@ More advanced examples are located in the `/examples` folder and can be automagi
 
 Anything in `<Brackets>` is the type of the object. Anything with `index = 0` is the default value of a parameter.
 
-### `graph.history` `<Immutable.List>`
+#### `graph.history` `<Immutable.List>`
 
 A list of every root node.
 
-### `graph.root()` returns `<Immutable.Map>`
+#### `graph.root()` returns `<Immutable.Map>`
 
 Get the current root.
 
-### `graph.update( newRoot<Immutable.Map> )`
+#### `graph.update( newRoot<Immutable.Map> )`
 
 Update the graph with a new root.
 
-### `graph.update( function( currentRoot<Immutable.Map> ) {} )`
+#### `graph.update( function( currentRoot<Immutable.Map> ) {} )`
 
 Update a root with a callback through [Immutable's `withMutation`](http://facebook.github.io/immutable-js/docs/#/Map/withMutations)
 
-### `graph.undo( steps<integer> )`
+#### `graph.undo( steps<integer> )`
 
 Point the current root to one in the past. Once the root is updated any roots in the future will be removed.
 
-### `graph.redo( steps<integer> )`
+#### `graph.redo( steps<integer> )`
 
 Sugar function from undo.
 
-### `graph.emitter` `<EventEmitter>`
+#### `graph.emitter` `<EventEmitter>`
 
 An emitter with the following events:
  * update - Anytime the root changes
  * undo - Anytime undo or redo is called
 
-### `graph.traverse` `<Object>`
+#### `graph.traverse` `<Object>`
 
 A collection of utilities to traverse a graph. Can be used as bare functions with `var traverse = require('immutable-graph/lib/traverse')`.
 
-#### `graph.traverse.down( root<Immutable.Map>, path <Array>, childIndex = 0 )`
+##### `graph.traverse.down( root<Immutable.Map>, path <Array>, childIndex = 0 )`
 
 Traverse a node path down one, returns a path array.
 
-#### `graph.traverse.downAll( root<Immutable.Map>, path <Array> )`
+##### `graph.traverse.downAll( root<Immutable.Map>, path <Array> )`
 
 Fetch all edge nodes from the path as an Immutable.List
 
-#### `graph.traverse.up( root<Immutable.Map>, path <Array> )`
+##### `graph.traverse.up( root<Immutable.Map>, path <Array> )`
 
 Traverse a node path up one, returns a path array.
 
-#### `graph.traverse.sibling( root<Immutable.Map>, path <Array>, directionOrIndexCallback )`
+##### `graph.traverse.sibling( root<Immutable.Map>, path <Array>, directionOrIndexCallback )`
 
 Fetch a sibling path array.
 
-#### `graph.traverse.each( root<Immutable.Map>, callback, path = [] )`
+##### `graph.traverse.each( root<Immutable.Map>, callback, path = [] )`
 
 Go depth first through each node in the graph. Callback gets passed:
 
     callback( path<Array>, node<Immutable.Map>, root<Immutable.Map> )
 
-#### `graph.traverse.reduce( root<Immutable.Map>, callback, memo, path = [] )`
+##### `graph.traverse.reduce( root<Immutable.Map>, callback, memo, path = [] )`
 
 Depth first reduce each node in the graph. Callback gets passed:
 
     callback( memo, node<Immutable.Map>, path<Array> )
 
-#### `graph.traverse.filter( root<Immutable.Map>, callback, path = [] )`
+##### `graph.traverse.filter( root<Immutable.Map>, callback, path = [] )`
 
 Depth first filter each node in the graph, returns an array of nodes. Callback gets passed:
 
     callback( node<Immutable.Map>, path<Array> )
 
 
-### `graph.modify`
+#### `graph.modify`
 
 A collection of utilities to easily modify the current graph structure. Can be used as bare functions with `var modify =  require('immutable-graph/lib/modify')`. Each function then has the graph as the first parameter. Each function adds to the history of the graph. Paths are assumed to point to nodes, not to edges.
 
-#### `graph.modify.move( nodePath<Array>, targetPath<Array> )`
+##### `graph.modify.move( nodePath<Array>, targetPath<Array> )`
 
-#### `graph.modify.add( targetPath<Array>, node<Immutable.Map> )`
+##### `graph.modify.add( targetPath<Array>, node<Immutable.Map> )`
 
-#### `graph.modify.remove( targetPath<Array>, nodeOrIndex<Immutable.Map, Integer> )`
+##### `graph.modify.remove( targetPath<Array>, nodeOrIndex<Immutable.Map, Integer> )`
 
 
-## Nodes
+### Nodes
 
-### Data structure
+#### Data structure
     node = Immutable.Map({
         "name" : "node-type-slug",
         "edges" : Immutable.List(), // Contains children nodes
@@ -133,7 +133,7 @@ A collection of utilities to easily modify the current graph structure. Can be u
 
 The state property is mutable and should not be serialized.
 
-### Paths
+#### Paths
 
     var root = []
     var someNode = ['edges', 4]
@@ -145,11 +145,11 @@ Nodes are referenced by paths in the tree. They can be used to get the actual no
     graph.root().getIn( someNode )
     graph.root().getIn( childInSomeNode )
 
-### Node Registry
+#### Node Registry
 
 There is a node registry to ensure there are no conflicts on the slugs for different types of nodes. The idea here is to enable multiple independent developers to create functionality without conflicting on naming conventions. If slugs are identical, the number ending is added and incremented e.g. registering three root nodes would make the slugs become "root", "root1", "root2".
 
-### .registerNodeType( slug )
+#### .registerNodeType( slug )
 
     var CreateSlugRegistry = require('immutable-graph/lib/node')
     var registry = CreateSlugRegistry()
@@ -165,7 +165,7 @@ The create node function takes the following parameters
 
     CreateNode( data, children )
 
-### .registerStateType( slug )
+#### .registerStateType( slug )
 
     var [forceSlug, getForce] = Node.registerStateType("force")
     
