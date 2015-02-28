@@ -39,13 +39,13 @@ More advanced examples are located in the `/examples` folder and can be automagi
 
 ## API:
 
-Anything in <Brackets> is the type of the object. Anything with `index = 0` is the default value of a parameter.
+Anything in `<Brackets>` is the type of the object. Anything with `index = 0` is the default value of a parameter.
 
-### `graph.history` <Immutable.List>
+### `graph.history` `<Immutable.List>`
 
 A list of every root node.
 
-### `graph.root()` returns <Immutable.Map>
+### `graph.root()` returns `<Immutable.Map>`
 
 Get the current root.
 
@@ -65,13 +65,13 @@ Point the current root to one in the past. Once the root is updated any roots in
 
 Sugar function from undo.
 
-### `graph.emitter` <EventEmitter>
+### `graph.emitter` `<EventEmitter>`
 
 An emitter with the following events:
  * update - Anytime the root changes
  * undo - Anytime undo or redo is called
 
-### `graph.traverse` <Object>
+### `graph.traverse` `<Object>`
 
 A collection of utilities to traverse a graph. Can be used as bare functions with `var traverse = require('immutable-graph/lib/traverse')`.
 
